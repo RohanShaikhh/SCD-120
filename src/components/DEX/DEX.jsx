@@ -53,8 +53,7 @@ const getChainIdByName = (chainName) => {
 
 const IsNative = (address) =>
   address === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
-
-function DEX({ chain, customTokens = {} }) {
+function DEX({ chain, customTokens = [{}], searchKeyword }) {
   var valueInputFrom;
   var valueInputTo;
   const checkFrom = () => {
@@ -63,16 +62,15 @@ function DEX({ chain, customTokens = {} }) {
   const checkTo = () => {
     console.log("clicked");
   };
-  const customTUSD = {
-    "0xdAC17F958D2ee523a2206206994597C13D831ec7": {
-      address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-      decimals: 6,
-      logoURI: "https://etherscan.io/token/images/tether_32.png",
-      name: "Tether USD",
-      symbol: "TUSD",
-    },
-  };
-  //const [getValue, setValue] = useState("");
+  // const customTUSD = {
+  //   "0xdAC17F958D2ee523a2206206994597C13D831ec7": {
+  //     address: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+  //     decimals: 6,
+  //     logoURI: "https://etherscan.io/token/images/tether_32.png",
+  //     name: "Tether USD",
+  //     symbol: "TUSD",
+  //   },
+  // };
   const { trySwap, tokenList, getQuote } = useInchDex(chain);
   const { Moralis, isInitialized, chainId } = useMoralis();
   const [isFromModalActive, setFromModalActive] = useState(false);
@@ -88,19 +86,21 @@ function DEX({ chain, customTokens = {} }) {
   const valueOfInputFrom = (e) => {
     //var valueInputFrom = e.target.value;
     valueInputFrom = e.target.value;
-    console.log(valueInputFrom);
+    //console.log(valueInputFrom);
+    searchKeyword(valueInputFrom);
   };
   const valueOfInputTo = (e) => {
     valueInputTo = e.target.value;
     console.log(valueInputTo);
+    searchKeyword(valueInputTo);
   };
   var tokens = useMemo(() => {
     return { ...customTokens, ...tokenList };
   }, [customTokens, tokenList]);
   //const1
-  var tokensOne = useMemo(() => {
-    return { ...customTUSD, ...tokenList };
-  }, [customTUSD, tokenList]);
+  // var tokensOne = useMemo(() => {
+  //   return { ...customTUSD, ...tokenList };
+  // }, [customTUSD, tokenList]);
   const fromTokenPriceUsd = useMemo(
     () =>
       tokenPricesUSD?.[fromToken?.["address"]]
@@ -393,14 +393,14 @@ function DEX({ chain, customTokens = {} }) {
         </Button>
       </Card>
       <Modal
-        title=<Input.Search
+        title=<Input
           onSearch={checkFrom}
           onChange={(e) => {
             valueOfInputFrom(e);
           }}
           style={{ width: "80%" }}
           placeholder="Search Here"
-        ></Input.Search>
+        ></Input>
         visible={isFromModalActive}
         onCancel={() => setFromModalActive(false)}
         bodyStyle={{ padding: 0 }}
@@ -411,24 +411,22 @@ function DEX({ chain, customTokens = {} }) {
           open={isFromModalActive}
           onClose={() => setFromModalActive(false)}
           setToken={setFromToken}
-          tokenList={
-            valueInputFrom === "TUSD" || valueInputFrom === "tusd"
-              ? tokensOne
-              : tokens
-          }
+          tokenList={tokens}
         />
       </Modal>
       <Modal
-        title=<Input.Search
+        title=<Input
           style={{ width: "80%" }}
           onSearch={checkTo}
           onChange={(e) => {
             valueOfInputTo(e);
           }}
           placeholder="Search Here"
-        ></Input.Search>
+        ></Input>
         visible={isToModalActive}
-        onCancel={() => setToModalActive(false)}
+        onCancel={() => {
+          setToModalActive(false), valueInputTo("");
+        }}
         bodyStyle={{ padding: 0 }}
         width="450px"
         footer={null}
