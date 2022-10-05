@@ -39,9 +39,6 @@ function MenuItems() {
       <Menu.Item icon={<ArrowsAltOutlined style={{ color: "#000" }} />}>
         <a href="https://www.metacians.com/">Metacians Platform</a>
       </Menu.Item>
-      <Menu.Item key="/liquidity">
-        <NavLink to="/liquidity">🖼 Liquidity Pool</NavLink>
-      </Menu.Item>
     </Menu>
   );
 }

@@ -13,7 +13,7 @@ import TokenPrice from "components/TokenPrice";
 import ERC20Balance from "components/ERC20Balance";
 import ERC20Transfers from "components/ERC20Transfers1";
 import DEX from "components/DEX";
-import NFTBalance from "components/NFTBalance";
+//import NFTBalance from "components/NFTBalance";
 import Wallet from "components/Wallet";
 import { Layout, Tabs } from "antd";
 import "antd/dist/antd.css";
@@ -458,6 +458,7 @@ const App = ({ isServerInfo }) => {
    }
   
   };
+
   const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } =
     useMoralis();
 
@@ -503,9 +504,6 @@ const App = ({ isServerInfo }) => {
             <Route path="/MetaciansWallet">
               <Wallet />
             </Route>
-            <Route path="/liquidity">
-              <LiquidityPool></LiquidityPool>
-            </Route>
             <Route path="/1inch">
               <Tabs
                 defaultActiveKey="1"
@@ -549,7 +547,7 @@ const App = ({ isServerInfo }) => {
               <ERC20Transfers />
             </Route>
             <Route path="/nftBalance">
-              <NFTBalance />
+            <LiquidityPool></LiquidityPool>  
             </Route>
             <Route path="/contract">
               <Contract />
